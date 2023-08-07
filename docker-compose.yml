@@ -1,0 +1,39 @@
+version: '2'
+
+volumes:
+  nextcloud:
+  db:
+
+services:
+  db:
+    image: mariadb:10.6
+    restart: always
+    command: --transaction-isolation=READ-COMMITTED --log-bin=binlog --binlog-format=ROW
+    volumes:
+      - db:/var/lib/mysql
+    environment:
+      - MYSQL_ROOT_PASSWORD=mysqlrootpassword
+      - MYSQL_PASSWORD=mysqlpassword
+      - MYSQL_DATABASE=nextcloud
+      - MYSQL_USER=nextcloud
+
+  redis:
+    image: redis
+    restart: always
+    command: redis-server --requirepass someredispassword2575
+
+  app:
+    image: nextcloud
+    restart: always
+    ports:
+      - 44443:80
+    links:
+      - db
+    volumes:
+      - /mnt/nextcloud:/var/www/html # Here you can choose a different location for the volume by changing the leftmost path
+    environment:
+      - MYSQL_PASSWORD=mysqlpassword
+      - MYSQL_DATABASE=nextcloud
+      - MYSQL_USER=nextcloud
+      - MYSQL_HOST=db
+      - REDIS_HOST_PASSWORD=someredispassword2575
