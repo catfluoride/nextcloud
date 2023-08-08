@@ -2,6 +2,12 @@
 $CONFIG = array (
   'htaccess.RewriteBase' => '/',
   'memcache.local' => '\\OC\\Memcache\\APCu',
+  'memcache.distributed' => '\OC\Memcache\Redis',
+  'memcache.locking' => '\OC\Memcache\Redis',
+  'redis' => [
+     'host' => 'redis',
+     'port' => 6379,
+   ],
   'filelocking.enabled' => true,
   'apps_paths' => 
   array (
