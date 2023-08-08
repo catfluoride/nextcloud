@@ -4,6 +4,10 @@ volumes:
   nextcloud:
   db:
 
+networks:
+  nextcloud_network:
+    external: false
+
 services:
   db:
     image: mariadb:10.6
@@ -16,17 +20,8 @@ services:
       - MYSQL_PASSWORD=mysqlpassword
       - MYSQL_DATABASE=nextcloud
       - MYSQL_USER=nextcloud
-
- # redis:
- #   image: redis
- #   restart: always
- #   command: redis-server /usr/local/etc/redis/redis.conf/redis.conf
- #   volumes_from:
- #     - app
- #   volumes:
- #     - ./redis.conf:/usr/local/etc/redis/redis.conf:rw
- #   links:
- #     - app
+    networks:
+      - nextcloud_network
 
   app:
     image: nextcloud
@@ -42,7 +37,19 @@ services:
       - MYSQL_DATABASE=nextcloud
       - MYSQL_USER=nextcloud
       - MYSQL_HOST=db
- #    - REDIS_HOST_PASSWORD=someredispassword
+      - REDIS_HOST=redis
+    networks:
+      - nextcloud_network
+
+  redis:
+    image: redis:alpine
+    container_name: redis
+    volumes:
+      - /mnt/nextcloud/redis:/data
+    networks:
+      - nextcloud_network
+    restart: unless-stopped
+
   cron:
     image: nextcloud
     restart: always
@@ -51,5 +58,6 @@ services:
     entrypoint: /cron.sh
     depends_on:
       - db
- #    - redis
       - app
+    networks:
+      - nextcloud_network
