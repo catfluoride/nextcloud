@@ -2,15 +2,7 @@
 $CONFIG = array (
   'htaccess.RewriteBase' => '/',
   'memcache.local' => '\\OC\\Memcache\\APCu',
-
-'filelocking.enabled' => true,
-'memcache.locking' => '\OC\Memcache\Redis',
-'redis' => array(
-     'host' => '/var/run/redis/redis.sock',
-     'port' => 0,
-     'timeout' => 0.0,
-      ),
-
+  'filelocking.enabled' => true,
   'apps_paths' => 
   array (
     0 => 
@@ -26,21 +18,17 @@ $CONFIG = array (
       'writable' => true,
     ),
   ),
-  'instanceid' => 'automatically created by docker',
-  'passwordsalt' => 'automatically created by docker',
-  'secret' => 'automatically created by docker',
+  'instanceid' => '<this is set by Nextcloud itself>',
+  'passwordsalt' => '<this is set by Nextcloud itself>',
+  'secret' => '<this is set by Nextcloud itself>',
   'trusted_domains' => 
   array (
-    0 => 'mydomain.tdl',
-  ),
-  'trusted_proxies' =>
-  array (
-    0 => '192.168.0.0/24',
+    0 => 'nextcloud.mydomain.tld',
   ),
   'datadirectory' => '/var/www/html/data',
   'dbtype' => 'mysql',
   'version' => '27.0.1.2',
-  'overwrite.cli.url' => 'https://mydomain.tld',
+  'overwrite.cli.url' => 'https://nextcloud.mydomain.tld',
   'dbname' => 'nextcloud',
   'dbhost' => 'db',
   'dbport' => '',
@@ -50,4 +38,14 @@ $CONFIG = array (
   'dbpassword' => 'mysqlpassword',
   'installed' => true,
   'overwriteprotocol' => 'https',
+  'mail_smtpmode' => 'smtp',
+  'mail_smtphost' => '<smtp server>',
+  'mail_sendmailmode' => 'smtp',
+  'mail_smtpauth' => 1,
+  'mail_from_address' => '<from: email>',
+  'mail_domain' => '<emain domain>',
+  'mail_smtpport' => '<smtp port>',
+  'mail_smtpsecure' => '<encryption>',
+  'mail_smtpname' => '<smpt username for authentication>',
+  'mail_smtppassword' => '<smtp password for authentication>',
 );
