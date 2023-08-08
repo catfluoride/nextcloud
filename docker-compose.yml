@@ -1,0 +1,55 @@
+version: '2'
+
+volumes:
+  nextcloud:
+  db:
+
+services:
+  db:
+    image: mariadb:10.6
+    restart: always
+    command: --transaction-isolation=READ-COMMITTED --log-bin=binlog --binlog-format=ROW
+    volumes:
+      - db:/var/lib/mysql
+    environment:
+      - MYSQL_ROOT_PASSWORD=mysqlrootpassword
+      - MYSQL_PASSWORD=mysqlpassword
+      - MYSQL_DATABASE=nextcloud
+      - MYSQL_USER=nextcloud
+
+ # redis:
+ #   image: redis
+ #   restart: always
+ #   command: redis-server /usr/local/etc/redis/redis.conf/redis.conf
+ #   volumes_from:
+ #     - app
+ #   volumes:
+ #     - ./redis.conf:/usr/local/etc/redis/redis.conf:rw
+ #   links:
+ #     - app
+
+  app:
+    image: nextcloud
+    restart: always
+    ports:
+      - 44443:80
+    links:
+      - db
+    volumes:
+      - /mnt/nextcloud:/var/www/html
+    environment:
+      - MYSQL_PASSWORD=mysqlpassword
+      - MYSQL_DATABASE=nextcloud
+      - MYSQL_USER=nextcloud
+      - MYSQL_HOST=db
+ #    - REDIS_HOST_PASSWORD=someredispassword2575
+  cron:
+    image: nextcloud
+    restart: always
+    volumes:
+      - /mnt/nextcloud:/var/www/html
+    entrypoint: /cron.sh
+    depends_on:
+      - db
+ #    - redis
+      - app
