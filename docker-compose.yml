@@ -20,7 +20,7 @@ services:
   redis:
     image: redis
     restart: always
-    command: redis-server --requirepass someredispassword2575
+    command: redis-server --requirepass someredispassword
 
   app:
     image: nextcloud
@@ -36,4 +36,4 @@ services:
       - MYSQL_DATABASE=nextcloud
       - MYSQL_USER=nextcloud
       - MYSQL_HOST=db
-      - REDIS_HOST_PASSWORD=someredispassword2575
+      - REDIS_HOST_PASSWORD=someredispassword
